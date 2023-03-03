@@ -1,0 +1,40 @@
+# ==============================================================================
+# Copyright (C) 2021 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+# ==============================================================================
+version: "3"
+networks:
+  ovms-bridge:
+    driver: bridge
+services:
+  ovms-server:
+    image: premraotd/chatgptj-dc-server:1.0
+    hostname: ovms-server
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    expose:
+      - "9000"
+    networks:
+      - ovms-bridge
+    command: [--port=9000, --model_path=/onnx, --model_name=gpt-j-6b]
+    tty:
+      true
+
+  ovms-client:
+    image: premraotd/chatgptj-dc-client:1.0
+    hostname: ovms-client
+    environment:
+      SERVER_NAME: ovms-client
+      GRPC_PORT: 9000
+    ports:
+      - "8000:8000"
+    networks:
+      - ovms-bridge
+    depends_on:
+      - ovms-server
+    links:
+      - ovms-server
+    tty:
+      true
+~
