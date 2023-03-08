@@ -25,7 +25,7 @@ services:
     image: premraotd/chatgptj-dc-client:1.0
     hostname: ovms-client
     environment: 
-      SERVER_NAME: ovms-client
+      SERVER_NAME: ovms-server
       GRPC_PORT: 9000
     ports:
       - "8000:8000"
